@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 60972b99879d0b645af782764de473e3
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - HoS: {fileID: 919132149155446097, guid: f403681e630c4804dba73642c0245e35, type: 3}
+  - Medic: {fileID: 919132149155446097, guid: a659221588734134e996a00c5c169ec7, type: 3}
+  - Engineer: {fileID: 919132149155446097, guid: 2b0d1ee6680f58744bb8a42c0ec0e6f7,
+      type: 3}
+  - Heavy: {fileID: 919132149155446097, guid: 61d0ab8e8baeeb74bae62ba98092426f, type: 3}
+  - Enemy: {fileID: 919132149155446097, guid: 5ae35715cae0ef347bd4511d405fdd3c, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

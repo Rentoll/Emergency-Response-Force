@@ -26,9 +26,6 @@ public class GridGraph
         }
     }
 
-    /// <summary>
-    /// Checks whether the neighbouring Node is within the grid bounds or not
-    /// </summary>
     public bool InBounds(Vector2 v)
     {
         if (v.x >= 0 && v.x < this.Width &&
@@ -38,18 +35,12 @@ public class GridGraph
             return false;
     }
 
-    /// <summary>
-    /// Checks whether the neighbouring Node is a wall or not
-    /// </summary>
     public bool Passable(Vector2 id)
     {
         if (Walls.Contains(id)) return false;
         else return true;
     }
 
-    /// <summary>
-    /// Returns a List of neighbouring Nodes
-    /// </summary>
     public List<Node> Neighbours(Node n)
     {
         List<Node> results = new List<Node>();
@@ -57,13 +48,9 @@ public class GridGraph
         List<Vector2> directions = new List<Vector2>()
         {
             new Vector2( -1, 0 ), // left
-            //new Vector2(-1, 1 ),  // top-left, comment it out for 4-direction movement
             new Vector2( 0, 1 ),  // top
-            //new Vector2( 1, 1 ),  // top-right, comment it out for 4-direction movement
             new Vector2( 1, 0 ),  // right
-            //new Vector2( 1, -1 ), // bottom-right, comment it out for 4-direction movement
             new Vector2( 0, -1 ), // bottom
-            //new Vector2( -1, -1 ) // bottom-left, comment it out for 4-direction movement
         };
 
         foreach (Vector2 v in directions)

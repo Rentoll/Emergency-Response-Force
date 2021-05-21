@@ -4,9 +4,18 @@ using UnityEngine;
 using System.IO;
 
 public class GenerateShip : MonoBehaviour {
+    private GameObject gridMvmt;
+    private GridMovement characterList;
+
+    private Crew crewList;
+
+    public GameObject[] spawnsForTeam;
+    public GameObject[] spawnsForEnemies;
+
     public int width;
     public int height;
     string pathSmall = "Assets/Scripts/ShipGenerator/smallShipModules.txt";
+    string pathShuttle = "Assets/Scripts/ShipGenerator/shuttle.txt";
 
     public List<GameObject> ShipSmallCargo;
     public List<GameObject> ShipSmallBedroom;
@@ -30,11 +39,18 @@ public class GenerateShip : MonoBehaviour {
 
     public List<GameObject> Shuttle;
 
+    public GameObject gridMovement;
     private List<Vector2> _Walls;
 
     private void Start() {
         _Walls = new List<Vector2>();
         roomsToClear = new List<GameObject>();
+
+        gridMvmt = GameObject.Find("GridMovement");
+        characterList = gridMvmt.GetComponent<GridMovement>();
+
+        crewList = gridMvmt.GetComponent<Crew>();
+        generateShip(1);
     }
 
     private void Update() {
@@ -72,21 +88,30 @@ public class GenerateShip : MonoBehaviour {
     }
     private void generateSmallShip() {
         //map size 12 45
+        gridMovement.GetComponent<GridMovement>().resize(12, 45);
         int cargo = Random.Range(0, ShipSmallCargo.Capacity);
         int bedroom = Random.Range(0, ShipSmallBedroom.Capacity);
         int bridge = Random.Range(0, ShipSmallBridge.Capacity);
 
         roomsToClear.Add(Instantiate(Shuttle[0], new Vector3(7, -1, 1), transform.rotation));
-        readAndAddToWalls(pathSmall, "#shuttle0");
+        SetLayerRecursively(roomsToClear[0], 10);
+        readAndAddToWalls(pathShuttle, "#shuttleSmall");
 
         roomsToClear.Add(Instantiate(ShipSmallCargo[cargo], new Vector3(11, 0, 18), transform.rotation));
+        SetLayerRecursively(roomsToClear[1], 10);
         readAndAddToWalls(pathSmall, "#cargo" + cargo);
 
         roomsToClear.Add(Instantiate(ShipSmallBedroom[bedroom], new Vector3(0, 0, 18), Quaternion.Euler(0, 180, 0)));
+        SetLayerRecursively(roomsToClear[2], 10);
         readAndAddToWalls(pathSmall, "#bedroom" + bedroom);
 
         roomsToClear.Add(Instantiate(ShipSmallBridge[bridge], new Vector3(0, 0, 31), Quaternion.Euler(0, 180, 0)));
+        SetLayerRecursively(roomsToClear[3], 10);
         readAndAddToWalls(pathSmall, "#bridge" + bridge);
+        gridMovement.GetComponent<GridMovement>().addWalls(_Walls);
+
+        spawnCrew();
+        spawnEnemies();
     }
 
     private void generateMediumShip() {
@@ -140,6 +165,24 @@ public class GenerateShip : MonoBehaviour {
 
     }
 
+    private void spawnCrew() {
+        spawnsForTeam = GameObject.FindGameObjectsWithTag("PlayerTeamSpawn");
+        int spawn = 0;
+        foreach (var character in Crew.currentEmergencyTeam) {
+            Spawner spawner = spawnsForTeam[spawn++].GetComponent<Spawner>();
+            spawner.spawnCharacter(character);
+        }
+        characterList.startUp();
+    }
+
+    private void spawnEnemies() {
+        spawnsForEnemies = GameObject.FindGameObjectsWithTag("EnemiesSpawn");
+        foreach(var enemy in spawnsForEnemies) {
+            Spawner spawner = enemy.GetComponent<Spawner>();
+            spawner.spawnEnemy();
+        }
+    }
+
     private void clearRooms() {
         foreach(var room in roomsToClear) {
             Destroy(room);
@@ -158,15 +201,26 @@ public class GenerateShip : MonoBehaviour {
             if(pairOfNumbers.Contains("#")) {
                 break;
             }
-            print(pairOfNumbers);
+            //print(pairOfNumbers);
             string[] bits = pairOfNumbers.Split(' ');
             int x = int.Parse(bits[0]);
             int z = int.Parse(bits[1]);
             if (pathToFile.Contains("medium")) {
                 z += 17;
             }
-            _Walls.Add(new Vector2(x, z));
+            _Walls.Add(new Vector2(z, x));
         }
         sr.Close();
+    }
+
+    void SetLayerRecursively(GameObject obj, int newLayer) {
+        obj.layer = newLayer;
+
+        foreach (Transform child in obj.transform) {
+            if (null == child) {
+                continue;
+            }
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
     }
 }

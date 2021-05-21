@@ -4,7 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - wall
+  - Enemy
+  - PlayerTeamSpawn
+  - EnemiesSpawn
   layers:
   - Default
   - TransparentFX
@@ -15,9 +17,9 @@ TagManager:
   - 
   - 
   - Unwalkable
-  - 
-  - 
-  - 
+  - FogOfWar
+  - Obstacle
+  - Enemy
   - 
   - 
   - 

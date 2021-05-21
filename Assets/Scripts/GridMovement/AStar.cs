@@ -2,17 +2,8 @@
 using Priority_Queue;
 using UnityEngine;
 
-/// <summary>
-/// Implementation of Amit Patel's A* Pathfinding algorithm studies
-/// https://www.redblobgames.com/pathfinding/a-star/introduction.html
-/// </summary>
-public static class AStar
-{
-    /// <summary>
-    /// Returns the best path as a List of Nodes
-    /// </summary>
-    public static List<Node> Search(GridGraph graph, Node start, Node goal)
-    {
+public static class AStar{
+    public static List<Node> Search(GridGraph graph, Node start, Node goal) {
         Dictionary<Node, Node> came_from = new Dictionary<Node, Node>();
         Dictionary<Node, float> cost_so_far = new Dictionary<Node, float>();
 
